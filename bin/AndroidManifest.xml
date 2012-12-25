@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".CameraSample"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_camera_sample" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
