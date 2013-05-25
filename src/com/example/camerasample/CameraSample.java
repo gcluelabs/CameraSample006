@@ -1,4 +1,4 @@
-package com.gclue.CameraSample;
+package com.example.camerasample;
 
 import java.util.List;
 
@@ -56,24 +56,17 @@ public class CameraSample extends Activity implements SensorEventListener,
 		mRegisteredSensor = false;
 
 		
-		// WebView
 		webView = new WebView(this);
 		webView.loadUrl("http://www.pref.kyoto.jp/");
-
-		// Web用のLayoutParams
 		arLayoutParams = new LinearLayout.LayoutParams(150, 150);
 		arLayoutParams.setMargins(0, 10, 0, 0);
 		
-		// WebViewを張り付けるLayout
 		arLayout = new LinearLayout(this);
 		arLayout.addView(webView, arLayoutParams);
 		
-		// WebViewを張り付けたLayoutを画面にはりつけ　
 		addContentView(arLayout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
-		// LocationManagerでGPSの値を取得するための設定
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		// 値が変化した際に呼び出されるリスナーの追加
 		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 	}
 
@@ -84,9 +77,7 @@ public class CameraSample extends Activity implements SensorEventListener,
 			Log.i("SENSOR", "roll:" + event.values[2]);
 			mView.onOrientationChanged((int) event.values[0],(int) event.values[1], (int) event.values[2]);
 			
-			// WebViewを位置を移動
 			arLayoutParams.setMargins((int) event.values[0] * 10, 10, 10, 10);
-			// Layoutを更新
 			arLayout.updateViewLayout(webView, arLayoutParams);
 			
 		} else if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -143,28 +134,19 @@ public class CameraSample extends Activity implements SensorEventListener,
 	}
    
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
 		mView.onGpsChanged(location.getLatitude(), location.getLongitude());
 	}
 
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
 	}
 	
 }
@@ -186,9 +168,6 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	/**
-	 * Surfaceに変化があった場合に呼ばれる
-	 */
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		Camera.Parameters parameters = mCamera.getParameters();
@@ -197,9 +176,6 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 		mCamera.startPreview();
 	}
 
-	/**
-	 * Surfaceが生成された際に呼ばれる
-	 */
 	public void surfaceCreated(SurfaceHolder holder) {
 		mCamera = Camera.open();
 		try {
@@ -210,18 +186,12 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	/**
-	 * Surfaceが破棄された場合に呼ばれる
-	 */
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		mCamera.stopPreview();
 		mCamera = null;
 	}
 }
 
-/**
- * オーバーレイ描画用のクラス
- */
 class MyView extends View {
 	private int mDx;
 	private int mDy;
@@ -237,31 +207,20 @@ class MyView extends View {
 	private int mCurX;
 	private int mCurY;
 
-	/**
-	 * コンストラクタ
-	 * 
-	 * @param c
-	 */
 	public MyView(Context c) {
 		super(c);
 		setFocusable(true);
 	}
 
-	/**
-	 * 描画処理
-	 */
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		/* 背景色を設定 */
 		canvas.drawColor(Color.TRANSPARENT);
 
-		/* 描画するための線の色を設定 */
 		Paint mPaint = new Paint();
 		mPaint.setStyle(Paint.Style.FILL);
 		mPaint.setARGB(255, 255, 255, 100);
 
-		/* 文字を描画 */
 		canvas.drawText("curX:" + mCurX, 20, 20, mPaint);
 		canvas.drawText("curY:" + mCurY, 80, 20, mPaint);
 
@@ -297,15 +256,10 @@ class MyView extends View {
 		invalidate();
 	}
 
-	/**
-	 * タッチイベント
-	 */
 	public boolean onTouchEvent(MotionEvent event) {
 
-		/* X,Y座標の取得 */
 		mCurX = (int) event.getX();
 		mCurY = (int) event.getY();
-		/* 再描画の指示 */
 		invalidate();
 
 		return true;
